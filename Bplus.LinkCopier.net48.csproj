@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <UseWpf>true</UseWpf>
+    <AssemblyName>BplusLinkCopier</AssemblyName>
+    <RootNamespace>BplusLinkCopier</RootNamespace>
+    <OutputPath>bin\Release\net48\</OutputPath>
+    <DefineConstants>TRACE;REVIT2023_2024</DefineConstants>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Installer\**;Distribution\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2024.2.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Icon_Copier_16.png" />
+    <EmbeddedResource Include="Icon_Copier_32.png" />
+    <Resource Include="SG_SL_MV.png" />
+    <Resource Include="link_copier_icon.png" />
+  </ItemGroup>
+</Project>

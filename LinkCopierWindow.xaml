@@ -1,0 +1,325 @@
+<Window x:Class="BplusLinkCopier.LinkCopierWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:BplusLinkCopier.Models"
+        mc:Ignorable="d"
+        Title="Bplus Link Copier" 
+        Height="720" Width="1050"
+        WindowStartupLocation="CenterScreen"
+        Background="#080808" Foreground="#FFFFFF"
+        Icon="pack://application:,,,/BplusLinkCopier;component/link_copier_icon.png">
+
+    <Window.Resources>
+        <!-- Dark Theme Colors -->
+        <SolidColorBrush x:Key="BackgroundDark" Color="#010101"/>
+        <SolidColorBrush x:Key="ContainerDark" Color="#0d0d0d"/>
+        <SolidColorBrush x:Key="BorderDark" Color="#1f1f1f"/>
+        <SolidColorBrush x:Key="PrimaryRed" Color="#DA1F1F"/>
+        <SolidColorBrush x:Key="PrimaryRedHover" Color="#ff3b3b"/>
+        <SolidColorBrush x:Key="TextLight" Color="#ffffff"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#a0a0a0"/>
+
+        <!-- Primary Red Button Style -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryRed}"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryRedHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Secondary Button Style -->
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#1f1f1f"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderBrush" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2a2a2a"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox Dark Styling -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#ffffff"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#444444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#000000"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Header Banner -->
+            <RowDefinition Height="Auto"/>
+            <!-- Main Content Area -->
+            <RowDefinition Height="*"/>
+            <!-- Footer Action Bar -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER BANNER -->
+        <Border Grid.Row="0" Background="#050505" BorderBrush="#1a1a1a" BorderThickness="0,0,0,1" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Bplus Link Copier" FontSize="20" FontWeight="Bold" Foreground="#ffffff" Margin="0,0,12,0"/>
+                        <Border Background="#DA1F1F" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                            <TextBlock Text="PRO ADD-IN" FontSize="9" FontWeight="Bold" Foreground="#ffffff"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock Text="Fast, Intelligent Element Transfer from Linked Revit Models" FontSize="12" Foreground="#888888" Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Target: Active Host Model" FontSize="11" Foreground="#a0a0a0" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- MAIN CONTENT (Sidebar + Workspace) -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Sidebar -->
+                <ColumnDefinition Width="300"/>
+                <!-- Workspace -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT SIDEBAR -->
+            <Border Grid.Column="0" Background="{StaticResource BackgroundDark}" BorderBrush="{StaticResource BorderDark}" BorderThickness="0,0,1,0" Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Rounded Bplus Logo & Author Tooltip -->
+                        <Border CornerRadius="8" Background="{StaticResource ContainerDark}" Padding="4,4,4,8" Margin="0,0,0,15">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,8">
+                                    <Border x:Name="LogoMask" Background="Black" CornerRadius="10"/>
+                                    <Image Source="pack://application:,,,/BplusLinkCopier;component/SG_SL_MV.png" 
+                                           Stretch="Uniform" HorizontalAlignment="Stretch"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"
+                                           ToolTipService.InitialShowDelay="0">
+                                        <Image.OpacityMask>
+                                            <VisualBrush Visual="{Binding ElementName=LogoMask}"/>
+                                        </Image.OpacityMask>
+                                        <Image.ToolTip>
+                                            <ToolTip Background="#1e1e1e" Foreground="#ffffff" BorderBrush="#444444" BorderThickness="1">
+                                                <StackPanel Margin="3">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
+                                                        <TextBlock Text="Author: " Foreground="#a0a0a0" FontSize="11"/>
+                                                        <TextBlock Text="Gimhan Umendra" FontWeight="Bold" FontSize="11" Foreground="#DA1F1F"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="Solutions Engineer for Autodesk Products" FontStyle="Italic" FontSize="10" Margin="0,0,0,4" Foreground="#cccccc"/>
+                                                    <TextBlock Text="B Plus Pvt Ltd" FontWeight="Bold" FontSize="11" Margin="0,0,0,2"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="For Inquiries: " FontSize="10" Foreground="#a0a0a0"/>
+                                                        <TextBlock Text="Call +94774071824" FontSize="10" FontWeight="Bold"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </Image.ToolTip>
+                                    </Image>
+                                </Grid>
+
+                                <TextBlock HorizontalAlignment="Center" FontSize="10" Foreground="{StaticResource TextMuted}">
+                                    <Run Text="More tools: "/>
+                                    <Hyperlink NavigateUri="https://bplus.lk/" RequestNavigate="Hyperlink_RequestNavigate" Foreground="#DA1F1F" FontWeight="Bold" TextDecorations="None">
+                                        <Run Text="bplus.lk"/>
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- LINKED MODEL SELECTOR -->
+                        <Border Background="{StaticResource ContainerDark}" CornerRadius="6" Padding="12" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="Linked Revit Model" FontWeight="Bold" Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,8"/>
+                                <ComboBox x:Name="cmbLinkedModels" SelectionChanged="cmbLinkedModels_SelectionChanged" Margin="0,0,0,10"/>
+                                <Button x:Name="btnRefreshLinks" Content="↻ Refresh Links" Style="{StaticResource SecondaryButton}" Click="btnRefreshLinks_Click" HorizontalAlignment="Right" Padding="12,5"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- QUICK ACTIONS -->
+                        <Border Background="{StaticResource ContainerDark}" CornerRadius="6" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="Quick Selection Toggles" FontWeight="Bold" Foreground="{StaticResource PrimaryRed}" Margin="0,0,0,8"/>
+                                <UniformGrid Columns="2">
+                                    <Button x:Name="btnSelectAll" Content="Check All" Style="{StaticResource SecondaryButton}" Click="btnSelectAll_Click" Margin="0,0,4,0" Padding="8,6"/>
+                                    <Button x:Name="btnUnselectAll" Content="Uncheck All" Style="{StaticResource SecondaryButton}" Click="btnUnselectAll_Click" Margin="4,0,0,0" Padding="8,6"/>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- RIGHT WORKSPACE (TABS) -->
+            <Grid Grid.Column="1" Background="#0a0a0a" Margin="15">
+                <TabControl Background="Transparent" BorderThickness="0">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" FontSize="13" FontWeight="Bold" Padding="12,6"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="#a0a0a0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border x:Name="Border" Background="#121212" BorderBrush="#222222" BorderThickness="1,1,1,0" CornerRadius="4,4,0,0" Margin="0,0,4,0" Padding="10,6">
+                                            <ContentPresenter x:Name="ContentSite" ContentSource="Header"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#DA1F1F"/>
+                                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
+
+                    <!-- TAB 1: FAMILY & CATEGORY BROWSER -->
+                    <TabItem Header="Family &amp; Category Browser">
+                        <Grid Margin="0,15,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Search Filter Box -->
+                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="txtSearch" Height="30" Background="#141414" Foreground="#888888" BorderBrush="#333333" Padding="8,5" VerticalContentAlignment="Center" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus" Text="Search Family, Category, or ID..."/>
+                                <Button Grid.Column="1" x:Name="btnClearSearch" Content="Clear" Style="{StaticResource SecondaryButton}" Click="btnClearSearch_Click" Margin="8,0,0,0" Height="30" Padding="12,0"/>
+                            </Grid>
+
+                            <!-- Hierarchical TreeView -->
+                            <Border Grid.Row="1" Background="#0e0e0e" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="5">
+                                <TreeView x:Name="tvCategoryTree" Background="Transparent" Foreground="#ffffff" BorderThickness="0">
+                                    <TreeView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Click="TreeItemCheckBox_Click" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Name}" Foreground="#ffffff" FontSize="13" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </HierarchicalDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+
+                    <!-- TAB 2: INTERACTIVE PICK MODE -->
+                    <TabItem Header="Pick in Revit View">
+                        <Grid Margin="0,15,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" Background="#121212" BorderBrush="#2a2a2a" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Multi-Element Interactive Picker" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryRed}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                    <TextBlock Text="Click below to select multiple elements at once from the linked model. Press 'Finish' in the top Revit bar when done." FontSize="12" Foreground="#aaaaaa" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                                    <Button x:Name="btnPickInView" Content="🖱 Multi-Select Linked Elements in View" Style="{StaticResource PrimaryButton}" Click="btnPickInView_Click" MinWidth="290" MinHeight="38" Padding="16,8"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Picked Items Table -->
+                            <Border Grid.Row="1" Background="#0e0e0e" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Picked Linked Elements Queue" FontWeight="Bold" Foreground="#ffffff" VerticalAlignment="Center"/>
+                                        <Button Grid.Column="1" x:Name="btnClearPicked" Content="Clear Queue" Style="{StaticResource SecondaryButton}" Click="btnClearPicked_Click" Padding="10,4"/>
+                                    </Grid>
+                                    <ListBox Grid.Row="1" x:Name="lstPickedElements" Background="#141414" Foreground="#ffffff" BorderBrush="#222222"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+
+        <!-- FOOTER ACTION BAR -->
+        <Border Grid.Row="2" Background="#050505" BorderBrush="#1a1a1a" BorderThickness="0,1,0,0" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="lblSelectionStatus" Text="0 Elements Selected for Copying" FontSize="13" FontWeight="Bold" Foreground="#ffffff" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="btnClose" Content="Cancel" Style="{StaticResource SecondaryButton}" Click="btnClose_Click" Width="90" Height="36" Margin="0,0,12,0"/>
+                    <Button x:Name="btnCopyElements" Content="Copy Selected Elements to Host" Style="{StaticResource PrimaryButton}" Click="btnCopyElements_Click" MinHeight="36" Padding="24,8"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

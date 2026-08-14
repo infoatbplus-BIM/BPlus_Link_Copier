@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-windows;net10.0-windows</TargetFrameworks>
+    <AssemblyName>BplusLinkCopier</AssemblyName>
+    <RootNamespace>BplusLinkCopier</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>x64</Platforms>
+    
+    <Optimize Condition="'$(Configuration)'=='Debug'">false</Optimize>
+    <DebugType Condition="'$(Configuration)'=='Debug'">embedded</DebugType>
+    <EmbedAllSources Condition="'$(Configuration)'=='Debug'">true</EmbedAllSources>
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+    
+    <DefaultItemExcludes>$(DefaultItemExcludes);Installer\**;Distribution\**</DefaultItemExcludes>
+    <DefineConstants>REVIT2025_2026</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2025.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="SG_SL_MV.png" />
+    <Resource Include="link_copier_icon.png" />
+    <EmbeddedResource Include="Icon_Copier_32.png" />
+    <EmbeddedResource Include="Icon_Copier_16.png" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PostBuildEvent Condition="'$(TargetFramework)' == 'net8.0-windows'">if not exist "%APPDATA%\Autodesk\Revit\Addins\2026" mkdir "%APPDATA%\Autodesk\Revit\Addins\2026" &amp;&amp; xcopy /Y "$(TargetDir)*.*" "%APPDATA%\Autodesk\Revit\Addins\2026\"</PostBuildEvent>
+    <PostBuildEvent Condition="'$(TargetFramework)' == 'net10.0-windows'">if not exist "%APPDATA%\Autodesk\Revit\Addins\2027" mkdir "%APPDATA%\Autodesk\Revit\Addins\2027" &amp;&amp; xcopy /Y "$(TargetDir)*.*" "%APPDATA%\Autodesk\Revit\Addins\2027\"</PostBuildEvent>
+  </PropertyGroup>
+
+</Project>

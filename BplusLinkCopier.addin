@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Bplus Link Copier</Name>
+    <Assembly>BplusLinkCopier.dll</Assembly>
+    <FullClassName>BplusLinkCopier.LinkCopierApplication</FullClassName>
+    <AddInId>F8A2D3C4-98E1-4B56-8A7F-123456789ABC</AddInId>
+    <VendorId>BPLUS</VendorId>
+    <VendorDescription>B Plus Pvt Ltd, https://bplus.lk/</VendorDescription>
+  </AddIn>
+</RevitAddIns>
