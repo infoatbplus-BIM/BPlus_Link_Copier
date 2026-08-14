@@ -55,7 +55,7 @@ dotnet build Bplus.LinkCopier.net48.csproj -c Release
 
 ## 🏢 About B Plus Pvt Ltd
 
-**B Plus Pvt Ltd — Plus preparing for tomorrow**  
+**B Plus Pvt Ltd — Preparing for tomorrow**  
 We specialize in building custom Autodesk Revit add-ins, BIM computational tools, and model automation software for engineering and architectural firms worldwide.
 
 * **Official Website**: [https://bplus.lk/](https://bplus.lk/)
